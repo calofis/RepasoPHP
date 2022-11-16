@@ -25,12 +25,6 @@
 </script>
 <!-- Bootstrap 4 -->
 <script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
-<!-- ChartJS -->
-<script src="plugins/chart.js/Chart.min.js"></script>
-<!-- Sparkline -->
-<script src="plugins/sparklines/sparkline.js"></script>
-<!-- jQuery Knob Chart -->
-<script src="plugins/jquery-knob/jquery.knob.min.js"></script>
 <!-- daterangepicker -->
 <script src="plugins/moment/moment.min.js"></script>
 <script src="plugins/daterangepicker/daterangepicker.js"></script>
@@ -41,9 +35,13 @@
 <!-- overlayScrollbars -->
 <script src="plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
 <script src="assets/js/adminlte.js"></script>
-<!-- AdminLTE for demo purposes -->
-<!--<script src="dist/js/demo.js"></script>-->
-<!-- AdminLTE dashboard demo (This is only for demo purposes) -->
-<!--<script src="dist/js/pages/dashboard.js"></script>-_>
+<?php
+//Para la carga adicional de ficheros JS desde un array
+if(isset($js) && is_array($js)){
+    foreach($js as $jsFile){
+        echo '<script src="'.$jsFile.'"></script>';
+    }
+}
+?>
 </body>
 </html>
