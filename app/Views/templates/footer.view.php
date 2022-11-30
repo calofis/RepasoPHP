@@ -34,7 +34,10 @@
 <script src="plugins/summernote/summernote-bs4.min.js"></script>
 <!-- overlayScrollbars -->
 <script src="plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
+<!-- Select2 -->
+<script src="plugins/select2/js/select2.full.min.js"></script>
 <script src="assets/js/adminlte.js"></script>
+<script src="assets/js/pages/main.js"></script>
 <?php
 //Para la carga adicional de ficheros JS desde un array
 if(isset($js) && is_array($js)){
