@@ -40,7 +40,7 @@ class UsuariosModel extends \Com\Daw2\Core\BaseModel{
          return $stmt->fetchAll();
     }
     public function getDatosSalario(int $salrioBajo, int $salarioAlto) : array{
-         $stmt = $this->pdo->prepare(self::SELECT_FROM.' WHERE  salarioBruto BETWEEN ? AND ?');
+         $stmt = $this->pdo->prepare(self::SELECT_FROM.' WHERE  salarioBruto BETWEEN ? AND ? ORDER BY salarioBruto DESC');
          $stmt->execute([$salrioBajo, $salarioAlto]);
          return $stmt->fetchAll();
     }

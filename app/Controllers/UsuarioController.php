@@ -107,6 +107,9 @@ class UsuarioController extends \Com\Daw2\Core\BaseController {
            if(strlen($_POST['username']) > 0){
                $datos = $modelUser->getDatosUsername((string)$_POST['username']);
                $data['data'] = $datos;
+           }else if((filter_var($_POST['minimoSalario'], FILTER_VALIDATE_INT) && (int)$_POST['minimoSalario'] > 0) && (filter_var($_POST['maximoSalario'], FILTER_VALIDATE_INT) && (int)$_POST['maximoSalario'] > 0)){
+               $datos = $modelUser->getDatosSalario((int)$_POST['minimoSalario'], (int)$_POST['maximoSalario']);
+               $data['data'] = $datos;
            }else{
                $model = new \Com\Daw2\Models\UsuariosModel();
        

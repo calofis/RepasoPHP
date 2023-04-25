@@ -43,13 +43,13 @@
                                 </div>
                                 <div class="col-12 col-lg-4">
                             <div class="mb-3">
-                                <label for="anho_fundacion">Año fundación:</label>
+                                <label for="anho_fundacion">Rango de salarios:</label>
                                 <div class="row">
                                     <div class="col-6">
-                                        <input type="text" class="form-control" name="min_anho" id="min_anho" value="" placeholder="Mí­nimo" />
+                                        <input type="text" class="form-control" name="minimoSalario" id="minimoSalario" value="<?php echo isset($input['minimoSalario']) ? $input['minimoSalario'] : ''; ?>" placeholder="Mí­nimo" />
                                     </div>
                                     <div class="col-6">
-                                        <input type="text" class="form-control" name="max_anho" id="max_anho" value="" placeholder="Máximo" />
+                                        <input type="text" class="form-control" name="maximoSalario" id="maximoSalario" value="<?php echo isset($input['maximoSalario']) ? $input['maximoSalario'] : ''; ?>" placeholder="Máximo" />
                                     </div>
                                 </div>
                             </div>
