@@ -1,10 +1,10 @@
-        <!-- Small boxes (Stat box) -->
+         <!-- Small boxes (Stat box) -->
         <div class="row">
           <div class="col-lg col-12">
             <!-- small box -->
             <div class="small-box bg-info">
               <div class="inner">
-                <h3>150</h3>
+                <h3><?php echo $myVar; ?></h3>
 
                 <p>Productos</p>
               </div>
@@ -157,5 +157,7 @@
         <!-- /.row -->
         <!-- Main row -->
         <!-- /.row (main row) -->
+
+  
 
   

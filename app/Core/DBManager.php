@@ -28,7 +28,7 @@ class DBManager {
     public function getConnection($emulatePrepares = false) {
         if (is_null($this->db)) {
             $host = $_ENV['db.host'];
-            $db = $_ENV['db.schema'];
+            $db = $_ENV['db.db'];
             $user = $_ENV['db.user'];
             $pass = $_ENV['db.pass'];
             $charset = $_ENV['db.charset'];
