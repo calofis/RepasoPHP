@@ -13,6 +13,11 @@ class UsuariosModel extends \Com\Daw2\Core\BaseModel{
         return $stmt->fetchAll();
     }
     
+    public function obtenerRetenciones() : array{
+        $stmt = $this->pdo->query('SELECT DISTINCT usuario.retencionIRPF FROM usuario');
+        return $stmt->fetchAll();
+    }
+    
     public function ordenarPorSalario() : array{
         $stmt = $this->pdo->query(self::SELECT_FROM.' ORDER BY salarioBruto DESC');
         return $stmt->fetchAll();
@@ -42,6 +47,11 @@ class UsuariosModel extends \Com\Daw2\Core\BaseModel{
     public function getDatosSalario(int $salrioBajo, int $salarioAlto) : array{
          $stmt = $this->pdo->prepare(self::SELECT_FROM.' WHERE  salarioBruto BETWEEN ? AND ? ORDER BY salarioBruto DESC');
          $stmt->execute([$salrioBajo, $salarioAlto]);
+         return $stmt->fetchAll();
+    }
+     public function getDatosRetenciones(int $retencion) : array{
+         $stmt = $this->pdo->prepare(self::SELECT_FROM.' WHERE  retencionIRPF = ?');
+         $stmt->execute([$retencion]);
          return $stmt->fetchAll();
     }
 }

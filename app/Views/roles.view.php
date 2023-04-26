@@ -53,7 +53,25 @@
                                     </div>
                                 </div>
                             </div>
-                        </div>   
+                        </div>
+                        <div class="col-12 col-lg-4">
+                                    <div class="mb-3">
+                                        <label for="retenciones">Retenciones:</label>
+                                        <select name="retenciones" id="retenciones" class="form-control" data-placeholder="Roles">
+                                            <option value="0"></option>
+                                            <?php foreach ($retenciones as $retencion) {
+                                                ?>
+                                                <?php if (isset($retencioness) && $retencion['retencionIRPF'] == $retencioness) { ?>
+                                                    <option value="<?php echo $retencion['retencionIRPF'];?>" selected="true"><?php echo $retencion['retencionIRPF']; ?></option>
+                                                <?php } else { ?>
+                                                    <option value="<?php echo $retencion['`retencionIRPF'];?>"><?php echo $retencion['retencionIRPF']; ?></option>
+                                                <?php } ?>
+                                                <?php
+                                            }
+                                            ?>                                                                         
+                                        </select>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                         <div class="card-footer">
