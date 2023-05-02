@@ -19,8 +19,8 @@
                             <div class="row">                                                                  
                                 <div class="col-12 col-lg-4">
                                     <div class="mb-3">
-                                        <label for="filtros">Roles:</label>
-                                        <select name="filtros" id="filtros" class="form-control" data-placeholder="Roles">
+                                        <label for="roles">Roles:</label>
+                                        <select name="roles" id="roles" class="form-control" data-placeholder="Roles">
                                             <option value="0"></option>
                                             <?php foreach ($roles as $rol) {
                                                 ?>

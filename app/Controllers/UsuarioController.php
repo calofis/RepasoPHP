@@ -8,7 +8,7 @@ class UsuarioController extends \Com\Daw2\Core\BaseController {
         $data = array(
             'titulo' => 'Usuarios',
             'breadcrumb' => ['Inicio', 'Usuarios'],
-            'section' => 'todos_usuarios'
+            'seccion' => 'todos_usuarios'
         );
 
         $model = new \Com\Daw2\Models\UsuariosModel();
@@ -23,7 +23,7 @@ class UsuarioController extends \Com\Daw2\Core\BaseController {
         $data = array(
             'titulo' => 'Usuarios',
             'breadcrumb' => ['Inicio', 'Usuarios'],
-            'section' => 'todos_usuarios_orderby'
+            'seccion' => 'todos_usuarios_orderby'
         );
 
         $model = new \Com\Daw2\Models\UsuariosModel();
@@ -38,7 +38,7 @@ class UsuarioController extends \Com\Daw2\Core\BaseController {
         $data = array(
             'titulo' => 'Usuarios',
             'breadcrumb' => ['Inicio', 'Usuarios'],
-            'section' => 'todos_usuariosSTD'
+            'seccion' => 'todos_usuariosSTD'
         );
 
         $model = new \Com\Daw2\Models\UsuariosModel();
@@ -53,7 +53,7 @@ class UsuarioController extends \Com\Daw2\Core\BaseController {
         $data = array(
             'titulo' => 'Usuarios',
             'breadcrumb' => ['Inicio', 'Usuarios'],
-            'section' => 'todos_carlos'
+            'seccion' => 'todos_carlos'
         );
 
         $model = new \Com\Daw2\Models\UsuariosModel();
@@ -68,7 +68,7 @@ class UsuarioController extends \Com\Daw2\Core\BaseController {
         $data = array(
             'titulo' => 'Roles',
             'breadcrumb' => ['Inicio', 'Roles'],
-            'section' => 'filtro_roles'
+            'seccion' => 'roles'
         );
 
         $modelUsuario = new \Com\Daw2\Models\UsuariosModel();
@@ -90,7 +90,7 @@ class UsuarioController extends \Com\Daw2\Core\BaseController {
         $data = array(
             'titulo' => 'Roles',
             'breadcrumb' => ['Inicio', 'Roles'],
-            'section' => 'filtro_roles'
+            'seccion' => 'roles'
         );
 
         $data['input'] = filter_var_array($_POST, FILTER_SANITIZE_SPECIAL_CHARS);
@@ -99,35 +99,14 @@ class UsuarioController extends \Com\Daw2\Core\BaseController {
 
         $roles = $modelRol->obtenerRoles();
         $data['roles'] = $roles;
+        $data['roless'] = $_POST['roles'];
         
         $modelUsuario = new \Com\Daw2\Models\UsuariosModel();
         $retenciones = $modelUsuario->obtenerRetenciones();
         $data['retenciones'] = $retenciones;
-        $modelUser = new \Com\Daw2\Models\UsuariosModel();
-
-        if (filter_var($_POST['filtros'], FILTER_VALIDATE_INT) && (int) $_POST['filtros'] > 0) {
-            $datos = $modelUser->getDatosRol((int) $_POST['filtros']);
-            $data['data'] = $datos;
-            $data['roless'] = $_POST['filtros'];
-        } else {
-            if (strlen($_POST['username']) > 0) {
-                $datos = $modelUser->getDatosUsername((string) $_POST['username']);
-                $data['data'] = $datos;
-            } else if ((filter_var($_POST['minimoSalario'], FILTER_VALIDATE_INT) && (int) $_POST['minimoSalario'] > 0) && (filter_var($_POST['maximoSalario'], FILTER_VALIDATE_INT) && (int) $_POST['maximoSalario'] > 0)) {
-                $datos = $modelUser->getDatosSalario((int) $_POST['minimoSalario'], (int) $_POST['maximoSalario']);
-                $data['data'] = $datos;
-            } else if (filter_var($_POST['retenciones'], FILTER_VALIDATE_FLOAT) && $_POST['retenciones'] > 0) {
-                $retenciones = $modelUsuario->getDatosRetenciones((int)$_POST['retenciones']);
-                $data['data'] = $retenciones;
-                $data['retencioness'] = $_POST['retenciones'];
-            } else {
-                $model = new \Com\Daw2\Models\UsuariosModel();
-
-                $usuarios = $model->obtenerTodos();
-                $data['data'] = $usuarios;
-            }
-        }
-
+        $data['retencioness'] = $_POST['retenciones'];
+        
+        $data['data'] = $modelUsuario->filtrar($_POST);
 
         $this->view->showViews(array('templates/header.view.php', 'roles.view.php', 'templates/footer.view.php'), $data);
     }

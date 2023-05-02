@@ -7,7 +7,8 @@ class EjerciciosController extends \Com\Daw2\Core\BaseController {
     public function factorial() {
         $data = array(
             'titulo' => 'Factorial',
-            'breadcrumb' => ['Inicio', 'Factorial']
+            'breadcrumb' => ['Inicio', 'Factorial'],
+            'seccion' => 'factorial'
         );           
         $this->view->showViews(array('templates/header.view.php', 'factorial.view.php', 'templates/footer.view.php'), $data);
     }    
@@ -15,7 +16,8 @@ class EjerciciosController extends \Com\Daw2\Core\BaseController {
     public function doFactorial() {
         $data = array(
             'titulo' => 'Factorial',
-            'breadcrumb' => ['Inicio', 'Factorial']
+            'breadcrumb' => ['Inicio', 'Factorial'],
+            'seccion' => 'factorial'
         ); 
         
         $errores = $this->checkFormFactorial($_POST);
@@ -55,7 +57,8 @@ class EjerciciosController extends \Com\Daw2\Core\BaseController {
     public function multiplicar() {
         $data = array(
             'titulo' => 'Multiplicar',
-            'breadcrumb' => ['Inicio', 'Multiplicar']
+            'breadcrumb' => ['Inicio', 'Multiplicar'],
+            'seccion' => 'multiplicar'
         );           
         $this->view->showViews(array('templates/header.view.php', 'multiplicar.view.php', 'templates/footer.view.php'), $data);
     }    
@@ -63,7 +66,8 @@ class EjerciciosController extends \Com\Daw2\Core\BaseController {
     public function doMultiplicar() {
         $data = array(
             'titulo' => 'Multiplicar',
-            'breadcrumb' => ['Inicio', 'Multiplicar']
+            'breadcrumb' => ['Inicio', 'Multiplicar'],
+            'seccion' => 'multiplicar'
         ); 
         
         $errores = $this->checkFormMultiplicar($_POST);
@@ -98,7 +102,8 @@ class EjerciciosController extends \Com\Daw2\Core\BaseController {
     public function primos() {
         $data = array(
             'titulo' => 'Primos',
-            'breadcrumb' => ['Inicio', 'Primos']
+            'breadcrumb' => ['Inicio', 'Primos'],
+            'seccion' => 'primos'
         );           
         $this->view->showViews(array('templates/header.view.php', 'primos.view.php', 'templates/footer.view.php'), $data);
     }    
@@ -106,7 +111,8 @@ class EjerciciosController extends \Com\Daw2\Core\BaseController {
     public function doPrimos() {
         $data = array(
             'titulo' => 'Primos',
-            'breadcrumb' => ['Inicio', 'Primos']
+            'breadcrumb' => ['Inicio', 'Primos'],
+            'seccion' => 'primos'
         ); 
         
         $errores = $this->checkFormPrimos($_POST);
@@ -146,7 +152,8 @@ class EjerciciosController extends \Com\Daw2\Core\BaseController {
     public function mayorMenor() {
         $data = array(
             'titulo' => 'Mayor-Menor',
-            'breadcrumb' => ['Inicio', 'Mayor-Menor']
+            'breadcrumb' => ['Inicio', 'Mayor-Menor'],
+            'seccion' => 'mayorMenor'
         );           
         $this->view->showViews(array('templates/header.view.php', 'mayorMenor.view.php', 'templates/footer.view.php'), $data);
     }    
@@ -154,7 +161,8 @@ class EjerciciosController extends \Com\Daw2\Core\BaseController {
     public function domayorMenor() {
         $data = array(
             'titulo' => 'Mayor-Menor',
-            'breadcrumb' => ['Inicio', 'Mayor-Menor']
+            'breadcrumb' => ['Inicio', 'Mayor-Menor'],
+            'section' => 'mayorMenor'
         ); 
         
         $errores = $this->checkFormMayoMenor($_POST);
@@ -210,7 +218,8 @@ class EjerciciosController extends \Com\Daw2\Core\BaseController {
     public function ordenar() {
         $data = array(
             'titulo' => 'Ordenar',
-            'breadcrumb' => ['Inicio', 'Ordenar']
+            'breadcrumb' => ['Inicio', 'Ordenar'],
+            'seccion' => 'ordenar'
         );           
         $this->view->showViews(array('templates/header.view.php', 'ordenar.view.php', 'templates/footer.view.php'), $data);
     }    
@@ -218,7 +227,8 @@ class EjerciciosController extends \Com\Daw2\Core\BaseController {
     public function doOrdenar() {
         $data = array(
             'titulo' => 'Ordenar',
-            'breadcrumb' => ['Inicio', 'Ordenar']
+            'breadcrumb' => ['Inicio', 'Ordenar'],
+            'seccion' => 'ordenar'
         ); 
         
         $errores = $this->checkOrdenar($_POST);
