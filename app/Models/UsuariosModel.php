@@ -50,7 +50,13 @@ class UsuariosModel extends \Com\Daw2\Core\BaseModel{
          return $stmt->fetchAll();
     }
      public function getDatosRetenciones(int $retencion) : array{
-         $stmt = $this->pdo->prepare(self::SELECT_FROM.' WHERE  retencionIRPF = ?');
+         $stmt = $this->pdo->prepare(self::SELECT_FROM.' WHERE retencionIRPF = ?');
+         $stmt->execute([$retencion]);
+         return $stmt->fetchAll();
+    }
+    
+    public function filtrar(array $filtros) : array{
+         $stmt = $this->pdo->prepare(self::SELECT_FROM.' WHERE retencionIRPF = ?');
          $stmt->execute([$retencion]);
          return $stmt->fetchAll();
     }

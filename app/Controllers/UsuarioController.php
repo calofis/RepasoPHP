@@ -102,7 +102,7 @@ class UsuarioController extends \Com\Daw2\Core\BaseController {
         
         $modelUsuario = new \Com\Daw2\Models\UsuariosModel();
         $retenciones = $modelUsuario->obtenerRetenciones();
-
+        $data['retenciones'] = $retenciones;
         $modelUser = new \Com\Daw2\Models\UsuariosModel();
 
         if (filter_var($_POST['filtros'], FILTER_VALIDATE_INT) && (int) $_POST['filtros'] > 0) {
@@ -116,12 +116,10 @@ class UsuarioController extends \Com\Daw2\Core\BaseController {
             } else if ((filter_var($_POST['minimoSalario'], FILTER_VALIDATE_INT) && (int) $_POST['minimoSalario'] > 0) && (filter_var($_POST['maximoSalario'], FILTER_VALIDATE_INT) && (int) $_POST['maximoSalario'] > 0)) {
                 $datos = $modelUser->getDatosSalario((int) $_POST['minimoSalario'], (int) $_POST['maximoSalario']);
                 $data['data'] = $datos;
-            } else if (filter_var($_POST['retenciones'], FILTER_VALIDATE_INT) && (int) $_POST['retenciones'] > 0) {
-                $model = new \Com\Daw2\Models\UsuariosModel();
-
-                $retenciones = $model->getDatosRetenciones();
+            } else if (filter_var($_POST['retenciones'], FILTER_VALIDATE_FLOAT) && $_POST['retenciones'] > 0) {
+                $retenciones = $modelUsuario->getDatosRetenciones((int)$_POST['retenciones']);
                 $data['data'] = $retenciones;
-                $data['roless'] = $_POST['retenciones'];
+                $data['retencioness'] = $_POST['retenciones'];
             } else {
                 $model = new \Com\Daw2\Models\UsuariosModel();
 

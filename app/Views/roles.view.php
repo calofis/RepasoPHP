@@ -64,7 +64,7 @@
                                                 <?php if (isset($retencioness) && $retencion['retencionIRPF'] == $retencioness) { ?>
                                                     <option value="<?php echo $retencion['retencionIRPF'];?>" selected="true"><?php echo $retencion['retencionIRPF']; ?></option>
                                                 <?php } else { ?>
-                                                    <option value="<?php echo $retencion['`retencionIRPF'];?>"><?php echo $retencion['retencionIRPF']; ?></option>
+                                                    <option value="<?php echo $retencion['retencionIRPF'];?>"><?php echo $retencion['retencionIRPF']; ?></option>
                                                 <?php } ?>
                                                 <?php
                                             }
