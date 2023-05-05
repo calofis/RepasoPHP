@@ -6,10 +6,12 @@ use \PDO;
 
 class UsuariosModel extends \Com\Daw2\Core\BaseModel{
     
+    private const POSICIONES = ['username', 'salarioBruto', 'retencionIRPF', 'aux_rol.nombre_rol'];
+    
     private const SELECT_FROM = 'SELECT usuario.*, aux_rol.nombre_rol FROM usuario LEFT JOIN aux_rol ON aux_rol.id_rol = usuario.id_rol';
     
-    public function obtenerTodos() : array{
-        $stmt = $this->pdo->query(self::SELECT_FROM);
+    public function obtenerTodos(int $posicion = 1) : array{
+        $stmt = $this->pdo->query(self::SELECT_FROM.' ORDER BY '.self::POSICIONES[$posicion-1]);
         return $stmt->fetchAll();
     }
     
@@ -55,14 +57,14 @@ class UsuariosModel extends \Com\Daw2\Core\BaseModel{
          return $stmt->fetchAll();
     }
     
-    public function filtrarA(array $filtros, array $var) : array{
+    public function filtrarA(array $filtros, array $var, int $posicion = 1) : array{
          $filtro = implode(' AND ', $filtros);
-         $stmt = $this->pdo->prepare(self::SELECT_FROM.' WHERE '.$filtro.' ORDER BY salarioBruto DESC');
+         $stmt = $this->pdo->prepare(self::SELECT_FROM.' WHERE '.$filtro);
          $stmt->execute($var);
          return $stmt->fetchAll();
     }
     
-    public function filtrar(array $filtros) : array{
+    public function filtrar(array $filtros, int $posicion = 1) : array{
         $where = [];
         $var = [];
         if (filter_var($filtros['roles'], FILTER_VALIDATE_INT) && (int) $filtros['roles'] > 0) {
@@ -86,9 +88,10 @@ class UsuariosModel extends \Com\Daw2\Core\BaseModel{
             $var['retenciones'] = $filtros['retenciones'];
         }
         if (empty($where)) {
-            return $this->obtenerTodos();
+            return $this->obtenerTodos($posicion);
         }else{
-            return $this->filtrarA($where, $var);
+            return $this->filtrarA($where, $var, $posicion);
         }
     }
+    
 }

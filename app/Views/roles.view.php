@@ -8,7 +8,7 @@
             <div class="card-body">
                 <div class="card shadow mb-4">
                     <form method="post" action="/roles">
-                        <input type="hidden" name="order" value="1"/>
+                        <input type="hidden" name="order" value="<?php echo $order?>"/>
                         <div
                             class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
                             <h6 class="m-0 font-weight-bold text-primary">Filtros</h6>                                    
@@ -42,19 +42,19 @@
                                     </div>
                                 </div>
                                 <div class="col-12 col-lg-4">
-                            <div class="mb-3">
-                                <label for="anho_fundacion">Rango de salarios:</label>
-                                <div class="row">
-                                    <div class="col-6">
-                                        <input type="text" class="form-control" name="minimoSalario" id="minimoSalario" value="<?php echo isset($input['minimoSalario']) ? $input['minimoSalario'] : ''; ?>" placeholder="Mí­nimo" />
-                                    </div>
-                                    <div class="col-6">
-                                        <input type="text" class="form-control" name="maximoSalario" id="maximoSalario" value="<?php echo isset($input['maximoSalario']) ? $input['maximoSalario'] : ''; ?>" placeholder="Máximo" />
+                                    <div class="mb-3">
+                                        <label for="anho_fundacion">Rango de salarios:</label>
+                                        <div class="row">
+                                            <div class="col-6">
+                                                <input type="text" class="form-control" name="minimoSalario" id="minimoSalario" value="<?php echo isset($input['minimoSalario']) ? $input['minimoSalario'] : ''; ?>" placeholder="Mí­nimo" />
+                                            </div>
+                                            <div class="col-6">
+                                                <input type="text" class="form-control" name="maximoSalario" id="maximoSalario" value="<?php echo isset($input['maximoSalario']) ? $input['maximoSalario'] : ''; ?>" placeholder="Máximo" />
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                        </div>
-                        <div class="col-12 col-lg-4">
+                                <div class="col-12 col-lg-4">
                                     <div class="mb-3">
                                         <label for="retenciones">Retenciones:</label>
                                         <select name="retenciones" id="retenciones" class="form-control" data-placeholder="Roles">
@@ -62,9 +62,9 @@
                                             <?php foreach ($retenciones as $retencion) {
                                                 ?>
                                                 <?php if (isset($retencioness) && $retencion['retencionIRPF'] == $retencioness) { ?>
-                                                    <option value="<?php echo $retencion['retencionIRPF'];?>" selected="true"><?php echo $retencion['retencionIRPF']; ?></option>
+                                                    <option value="<?php echo $retencion['retencionIRPF']; ?>" selected="true"><?php echo $retencion['retencionIRPF']; ?></option>
                                                 <?php } else { ?>
-                                                    <option value="<?php echo $retencion['retencionIRPF'];?>"><?php echo $retencion['retencionIRPF']; ?></option>
+                                                    <option value="<?php echo $retencion['retencionIRPF']; ?>"><?php echo $retencion['retencionIRPF']; ?></option>
                                                 <?php } ?>
                                                 <?php
                                             }
@@ -88,10 +88,10 @@
                     <table id="categoriaTable" class="table table-bordered table-striped  dataTable">
                         <thead>
                             <tr>
-                                <th>Username</th>
-                                <th>Salario Bruto</th>
-                                <th>IRPF</th>
-                                <th>Rol</th>
+                                <th><a href="/roles?order=1">Username</a></th>
+                                <th><a href="/roles?order=2">Salario Bruto</a></th>
+                                <th><a href="/roles?order=3">IRPF</a></th>
+                                <th><a href="/roles?order=4">Rol</a></th>
                                 <th></th>
                             </tr>
                         </thead>
@@ -99,9 +99,11 @@
                             <?php
                             foreach ($data as $user) {
                                 ?>
-                                <tr id="usuario-<?php echo $user['username']; ?>" <?php if ($user['activo'] == 0) {
-                            echo 'class="table-danger"';
-                        } ?>>
+                                <tr id="usuario-<?php echo $user['username']; ?>" <?php
+                                if ($user['activo'] == 0) {
+                                    echo 'class="table-danger"';
+                                }
+                                ?>>
                                     <td><?php echo $user['username']; ?></td>
                                     <td><?php echo $user['salarioBruto']; ?></td>
                                     <td><?php echo $user['retencionIRPF']; ?></td>

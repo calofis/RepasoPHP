@@ -13,7 +13,7 @@ class UsuarioController extends \Com\Daw2\Core\BaseController {
 
         $model = new \Com\Daw2\Models\UsuariosModel();
 
-        $usuarios = $model->obtenerTodos();
+        $usuarios = $model->obtenerTodos(0);
         $data['data'] = $usuarios;
 
         $this->view->showViews(array('templates/header.view.php', 'usuarios.view.php', 'templates/footer.view.php'), $data);
@@ -73,7 +73,7 @@ class UsuarioController extends \Com\Daw2\Core\BaseController {
 
         $modelUsuario = new \Com\Daw2\Models\UsuariosModel();
 
-        $usuarios = $modelUsuario->obtenerTodos();
+        $usuarios = $modelUsuario->obtenerTodos(0);
         $retenciones = $modelUsuario->obtenerRetenciones();
         $data['data'] = $usuarios;
         $data['retenciones'] = $retenciones;
@@ -82,6 +82,8 @@ class UsuarioController extends \Com\Daw2\Core\BaseController {
 
         $roles = $modelRol->obtenerRoles();
         $data['roles'] = $roles;
+        
+
 
         $this->view->showViews(array('templates/header.view.php', 'roles.view.php', 'templates/footer.view.php'), $data);
     }
@@ -106,9 +108,20 @@ class UsuarioController extends \Com\Daw2\Core\BaseController {
         $data['retenciones'] = $retenciones;
         $data['retencioness'] = $_POST['retenciones'];
         
-        $data['data'] = $modelUsuario->filtrar($_POST);
+         if((isset($_GET['order']) && filter_var($_GET['order'], FILTER_VALIDATE_INT)) && ($_GET['order'] >= 1 && $_GET['order'] <= 4)){
+            $order = $_GET['order'];
+        }else{
+            $order = 1;
+        }
+        
+        $data['order'] = $order;
+        
+        $data['data'] = $modelUsuario->filtrar($_POST, $order);
 
+       
+        
         $this->view->showViews(array('templates/header.view.php', 'roles.view.php', 'templates/footer.view.php'), $data);
     }
+   
 
 }

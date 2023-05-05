@@ -131,7 +131,7 @@ class FrontController{
         Route::add('/roles', 
                 function(){
                     $controlador = new \Com\Daw2\Controllers\UsuarioController();
-                    $controlador->roles();
+                    $controlador->datosFiltros();
                 }
                 , 'get');
         Route::add('/roles', 
