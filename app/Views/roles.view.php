@@ -7,7 +7,7 @@
             </div>
             <div class="card-body">
                 <div class="card shadow mb-4">
-                    <form method="post" action="/roles">
+                    <form method="get" action="/roles">
                         <input type="hidden" name="order" value="<?php echo $order?>"/>
                         <div
                             class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
@@ -88,10 +88,10 @@
                     <table id="categoriaTable" class="table table-bordered table-striped  dataTable">
                         <thead>
                             <tr>
-                                <th><a href="/roles?order=1">Username</a></th>
-                                <th><a href="/roles?order=2">Salario Bruto</a></th>
-                                <th><a href="/roles?order=3">IRPF</a></th>
-                                <th><a href="/roles?order=4">Rol</a></th>
+                                <th><a href="/roles?order=1<?php echo $filtro;?>">Username</a></th>
+                                <th><a href="/roles?order=2<?php echo $filtro;?>">Salario Bruto</a></th>
+                                <th><a href="/roles?order=3<?php echo $filtro;?>">IRPF</a></th>
+                                <th><a href="/roles?order=4<?php echo $filtro;?>">Rol</a></th>
                                 <th></th>
                             </tr>
                         </thead>

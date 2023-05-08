@@ -82,8 +82,6 @@ class UsuarioController extends \Com\Daw2\Core\BaseController {
 
         $roles = $modelRol->obtenerRoles();
         $data['roles'] = $roles;
-        
-
 
         $this->view->showViews(array('templates/header.view.php', 'roles.view.php', 'templates/footer.view.php'), $data);
     }
@@ -95,33 +93,39 @@ class UsuarioController extends \Com\Daw2\Core\BaseController {
             'seccion' => 'roles'
         );
 
-        $data['input'] = filter_var_array($_POST, FILTER_SANITIZE_SPECIAL_CHARS);
+        $data['input'] = filter_var_array($_GET, FILTER_SANITIZE_SPECIAL_CHARS);
 
         $modelRol = new \Com\Daw2\Models\RolesModel();
 
         $roles = $modelRol->obtenerRoles();
         $data['roles'] = $roles;
-        $data['roless'] = $_POST['roles'];
-        
+        if (isset($_GET['roles'])) {
+            $data['roless'] = $_GET['roles'];
+        }
         $modelUsuario = new \Com\Daw2\Models\UsuariosModel();
         $retenciones = $modelUsuario->obtenerRetenciones();
         $data['retenciones'] = $retenciones;
-        $data['retencioness'] = $_POST['retenciones'];
-        
-         if((isset($_GET['order']) && filter_var($_GET['order'], FILTER_VALIDATE_INT)) && ($_GET['order'] >= 1 && $_GET['order'] <= 4)){
+        if (isset($_GET['retenciones'])) {
+            $data['retencioness'] = $_GET['retenciones'];
+        }
+
+        if ((isset($_GET['order']) && filter_var($_GET['order'], FILTER_VALIDATE_INT)) && ($_GET['order'] >= 1 && $_GET['order'] <= 4)) {
             $order = $_GET['order'];
-        }else{
+        } else {
             $order = 1;
         }
-        
-        $data['order'] = $order;
-        
-        $data['data'] = $modelUsuario->filtrar($_POST, $order);
 
-       
+        $data['order'] = $order;
+
+        $data['data'] = $modelUsuario->filtrar($_GET, $order);
+
+        $filtro = '';
         
+        foreach ($_GET as $filtros => $dato) {
+            $filtro .= '&'.$filtros.'='.$dato;
+        }
+        $data['filtro'] = substr($filtro, 8);
         $this->view->showViews(array('templates/header.view.php', 'roles.view.php', 'templates/footer.view.php'), $data);
     }
-   
 
 }

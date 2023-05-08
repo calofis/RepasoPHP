@@ -11,7 +11,7 @@ class UsuariosModel extends \Com\Daw2\Core\BaseModel{
     private const SELECT_FROM = 'SELECT usuario.*, aux_rol.nombre_rol FROM usuario LEFT JOIN aux_rol ON aux_rol.id_rol = usuario.id_rol';
     
     public function obtenerTodos(int $posicion = 1) : array{
-        $stmt = $this->pdo->query(self::SELECT_FROM.' ORDER BY '.self::POSICIONES[$posicion-1]);
+        $stmt = $this->pdo->query(self::SELECT_FROM.' ORDER BY '.self::POSICIONES[$posicion - 1]);
         return $stmt->fetchAll();
     }
     
@@ -59,7 +59,7 @@ class UsuariosModel extends \Com\Daw2\Core\BaseModel{
     
     public function filtrarA(array $filtros, array $var, int $posicion = 1) : array{
          $filtro = implode(' AND ', $filtros);
-         $stmt = $this->pdo->prepare(self::SELECT_FROM.' WHERE '.$filtro);
+         $stmt = $this->pdo->prepare(self::SELECT_FROM.' WHERE '.$filtro.' ORDER BY '.self::POSICIONES[$posicion - 1]);
          $stmt->execute($var);
          return $stmt->fetchAll();
     }
@@ -67,23 +67,24 @@ class UsuariosModel extends \Com\Daw2\Core\BaseModel{
     public function filtrar(array $filtros, int $posicion = 1) : array{
         $where = [];
         $var = [];
-        if (filter_var($filtros['roles'], FILTER_VALIDATE_INT) && (int) $filtros['roles'] > 0) {
+        if (isset($filtros['roles']) && filter_var($filtros['roles'], FILTER_VALIDATE_INT) && (int) $filtros['roles'] > 0) {
             $where[] = 'aux_rol.id_rol= :id_rol';
             $var['id_rol'] = $filtros['roles'];
         }
-        if (strlen($filtros['username']) > 0) {
-            $where[] = 'username = :username';
-            $var['username'] = $filtros['username'];
+        if (isset($filtros['username']) && strlen($filtros['username']) > 0) {
+            $where[] = 'username LIKE :username';
+            $searchString = "%$filtros[username]%";
+            $var['username'] = $searchString;
         }
-        if (is_numeric($filtros['minimoSalario']) && (float) $filtros['minimoSalario'] > 0) {
+        if (isset($filtros['minimoSalario']) && is_numeric($filtros['minimoSalario']) && (float) $filtros['minimoSalario'] > 0) {
             $where[] = ' salarioBruto >= :min';
             $var['min'] = $filtros['minimoSalario'];
         }
-        if (is_numeric($filtros['maximoSalario']) && (float) $filtros['maximoSalario'] > 0) {
+        if (isset($filtros['maximoSalario']) && is_numeric($filtros['maximoSalario']) && (float) $filtros['maximoSalario'] > 0) {
             $where[] = ' salarioBruto <= :max';
             $var['max'] = $filtros['maximoSalario'];
         }
-        if (filter_var($filtros['retenciones'], FILTER_VALIDATE_FLOAT) && $filtros['retenciones'] > 0) {
+        if (isset($filtros['retenciones']) && filter_var($filtros['retenciones'], FILTER_VALIDATE_FLOAT) && $filtros['retenciones'] > 0) {
             $where[] = 'retencionIRPF = :retenciones';
             $var['retenciones'] = $filtros['retenciones'];
         }
