@@ -100,7 +100,9 @@ class UsuarioController extends \Com\Daw2\Core\BaseController {
         $roles = $modelRol->obtenerRoles();
         $data['roles'] = $roles;
         if (isset($_GET['roles'])) {
-            $data['roless'] = $_GET['roles'];
+            foreach ($_GET['roles'] as $clave => $valor){
+                $data['roless'] = $valor;
+            }
         }
         $modelUsuario = new \Com\Daw2\Models\UsuariosModel();
         $retenciones = $modelUsuario->obtenerRetenciones();
@@ -119,12 +121,11 @@ class UsuarioController extends \Com\Daw2\Core\BaseController {
 
         $data['data'] = $modelUsuario->filtrar($_GET, $order);
 
-        $filtro = '';
+        $copia = $_GET;
+        unset($copia['order']);     
+        $data['filtro'] = count($copia) > 0 ? '&'.http_build_query($copia) : '';
         
-        foreach ($_GET as $filtros => $dato) {
-            $filtro .= '&'.$filtros.'='.$dato;
-        }
-        $data['filtro'] = substr($filtro, 8);
+        
         $this->view->showViews(array('templates/header.view.php', 'roles.view.php', 'templates/footer.view.php'), $data);
     }
 

@@ -20,11 +20,11 @@
                                 <div class="col-12 col-lg-4">
                                     <div class="mb-3">
                                         <label for="roles">Roles:</label>
-                                        <select name="roles" id="roles" class="form-control" data-placeholder="Roles">
+                                        <select name="roles[]" id="roles" class="form-control select2" data-placeholder="Roles" multiple>
                                             <option value="0"></option>
                                             <?php foreach ($roles as $rol) {
                                                 ?>
-                                                <?php if (isset($roless) && $rol['id_rol'] == $roless) { ?>
+                                                <?php if (in_array($rol['id_rol'], $_GET['roles'])) { ?>
                                                     <option value="<?php echo $rol['id_rol']; ?>" selected="true"><?php echo $rol['nombre_rol']; ?></option>
                                                 <?php } else { ?>
                                                     <option value="<?php echo $rol['id_rol']; ?>"><?php echo $rol['nombre_rol']; ?></option>
