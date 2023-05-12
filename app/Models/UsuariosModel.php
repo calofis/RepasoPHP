@@ -9,8 +9,8 @@ class UsuariosModel extends \Com\Daw2\Core\BaseModel {
     private const POSICIONES = ['username', 'salarioBruto', 'retencionIRPF', 'aux_rol.nombre_rol'];
     private const SELECT_FROM = 'SELECT usuario.*, aux_rol.nombre_rol FROM usuario LEFT JOIN aux_rol ON aux_rol.id_rol = usuario.id_rol';
 
-    public function obtenerTodos(int $posicion = 1): array {
-        $stmt = $this->pdo->query(self::SELECT_FROM . ' ORDER BY ' . self::POSICIONES[$posicion - 1]);
+    public function obtenerTodos(int $posicion = 1, int $inicio = 1): array {
+        $stmt = $this->pdo->query(self::SELECT_FROM . ' ORDER BY ' . self::POSICIONES[$posicion - 1].' LIMIT '.$this->calcularNumPag($inicio).',20');
         return $stmt->fetchAll();
     }
 
@@ -58,14 +58,14 @@ class UsuariosModel extends \Com\Daw2\Core\BaseModel {
         return $stmt->fetchAll();
     }
 
-    public function filtrarA(array $filtros, array $var, int $posicion = 1): array {
+    public function filtrarA(array $filtros, array $var, int $posicion = 1, int $pagina): array {
         $filtro = implode(' AND ', $filtros);
-        $stmt = $this->pdo->prepare(self::SELECT_FROM . ' WHERE ' . $filtro . ' ORDER BY ' . self::POSICIONES[$posicion - 1]);
+        $stmt = $this->pdo->prepare(self::SELECT_FROM . ' WHERE ' . $filtro . ' ORDER BY ' . self::POSICIONES[$posicion - 1].' LIMIT '.$this->calcularNumPag($pagina).',20');  
         $stmt->execute($var);
         return $stmt->fetchAll();
     }
 
-    public function filtrar(array $filtros, int $posicion = 1): array {
+    public function filtrar(array $filtros, int $posicion = 1, int $pagina): array {
         $where = [];
         $var = [];
         if (isset($filtros['roles']) && (array) count($filtros['roles']) > 0 && filter_var_array($filtros['roles'], FILTER_VALIDATE_INT) !== false) {
@@ -97,10 +97,16 @@ class UsuariosModel extends \Com\Daw2\Core\BaseModel {
             $var['retenciones'] = $filtros['retenciones'];
         }
         if (empty($where)) {
-            return $this->obtenerTodos($posicion);
+            return $this->obtenerTodos($posicion, $pagina);
         } else {
-            return $this->filtrarA($where, $var, $posicion);
+     
+            return $this->filtrarA($where, $var, $posicion, $pagina);
         }
+    }
+    
+    private function calcularNumPag(int $pagina) : int{
+        $inicio = ($pagina -1) * 20;
+        return $inicio;
     }
 
 }
