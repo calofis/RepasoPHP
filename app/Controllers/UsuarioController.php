@@ -122,12 +122,13 @@ class UsuarioController extends \Com\Daw2\Core\BaseController {
         if(isset($_GET['page']) && filter_var($_GET['page'], FILTER_VALIDATE_INT) && $_GET['page'] > 1){
            $pagina = $_GET['page'];
         }
-             
         
+        $data['pagina'] = $pagina;
         $data['data'] = $modelUsuario->filtrar($_GET, $order, $pagina);
 
         $copia = $_GET;
-        unset($copia['order']);     
+        unset($copia['order']);
+        unset($copia['page']);
         $data['filtro'] = count($copia) > 0 ? '&'.http_build_query($copia) : '';
     
         $this->view->showViews(array('templates/header.view.php', 'roles.view.php', 'templates/footer.view.php'), $data);

@@ -127,6 +127,40 @@
                 }
                 ?>
             </div>
+            <div class="card-footer">
+                <nav aria-label="Navegacion por paginas">
+                    <ul class="pagination justify-content-center">
+                        <?php if($pagina > 1){?>
+                        <li class="page-item">
+                            <a class="page-link" href="/proveedores?page=1&order=1" aria-label="First">
+                                <span aria-hidden="true">&laquo;</span>
+                                <span class="sr-only">First</span>
+                            </a>
+                        </li>
+                        <li class="page-item">
+                            <a class="page-link" href="/roles?order=1&page=<?php echo $pagina-1; echo $filtro;?>" aria-label="Previous">
+                                <span aria-hidden="true">&lt;</span>
+                                <span class="sr-only">Previous</span>
+                            </a>
+                        </li>
+                        <?php}
+                        if($pagina > 1){?>
+                        <li class="page-item active"><a class="page-link" href="#"><?php echo $pagina?></a></li>   
+                        <li class="page-item">
+                            <a class="page-link" href="/roles?order=1&page=<?php echo $pagina+1; echo $filtro;?>" aria-label="Next">
+                                <span aria-hidden="true">&gt;</span>
+                                <span class="sr-only">Next</span>
+                            </a>
+                        </li>
+                        <li class="page-item">
+                            <a class="page-link" href="" aria-label="Last">
+                                <span aria-hidden="true">&raquo;</span>
+                                <span class="sr-only">Last</span>
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
         </div>
     </div> 
 </div>
