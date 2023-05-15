@@ -58,14 +58,19 @@ class UsuariosModel extends \Com\Daw2\Core\BaseModel {
         return $stmt->fetchAll();
     }
 
-    public function filtrarA(array $filtros, array $var, int $posicion = 1, int $pagina): array {
-        $filtro = implode(' AND ', $filtros);
-        $stmt = $this->pdo->prepare(self::SELECT_FROM . ' WHERE ' . $filtro . ' ORDER BY ' . self::POSICIONES[$posicion - 1].' LIMIT '.$this->calcularNumPag($pagina).',20');  
-        $stmt->execute($var);
+    public function filtrarA(array $filtros, int $posicion = 1, int $pagina): array {
+        $datosConsulta = $this->filtrar($filtros);
+        $filtro = implode(' AND ', $datosConsulta[0]);
+        if(empty($filtro)){
+          $stmt = $this->pdo->query(self::SELECT_FROM . ' ORDER BY ' . self::POSICIONES[$posicion - 1].' LIMIT '.$this->calcularNumPag($pagina).',20');
+        }else{
+          $stmt = $this->pdo->prepare(self::SELECT_FROM . ' WHERE ' . $filtro . ' ORDER BY ' . self::POSICIONES[$posicion - 1].' LIMIT '.$this->calcularNumPag($pagina).',20');
+        }
+        $stmt->execute($datosConsulta[1]);
         return $stmt->fetchAll();
     }
 
-    public function filtrar(array $filtros, int $posicion = 1, int $pagina): array {
+    private function filtrar(array $filtros): array {
         $where = [];
         $var = [];
         if (isset($filtros['roles']) && (array) count($filtros['roles']) > 0 && filter_var_array($filtros['roles'], FILTER_VALIDATE_INT) !== false) {
@@ -96,12 +101,7 @@ class UsuariosModel extends \Com\Daw2\Core\BaseModel {
             $where[] = 'retencionIRPF = :retenciones';
             $var['retenciones'] = $filtros['retenciones'];
         }
-        if (empty($where)) {
-            return $this->obtenerTodos($posicion, $pagina);
-        } else {
-     
-            return $this->filtrarA($where, $var, $posicion, $pagina);
-        }
+       return [$where, $var]; 
     }
     
     private function calcularNumPag(int $pagina) : int{
