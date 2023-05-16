@@ -62,13 +62,12 @@ class UsuariosModel extends \Com\Daw2\Core\BaseModel {
         $datosConsulta = $this->filtrar($filtros);
         $filtro = implode(' AND ', $datosConsulta[0]);
         if(empty($filtro)){
-          $stmt = $this->pdo->query('SELECT COUNT(*) as numero FROM usuario LEFT JOIN aux_rol ON aux_rol.id_rol = usuario.id_rol ORDER BY ' . self::POSICIONES[$posicion - 1]);
+          $stmt = $this->pdo->query('SELECT COUNT(*) as numero FROM usuario LEFT JOIN aux_rol ON aux_rol.id_rol = usuario.id_rol');
         }else{
-          $stmt = $this->pdo->prepare('SELECT COUNT(*) as numero FROM usuario LEFT JOIN aux_rol ON aux_rol.id_rol = usuario.id_rol WHERE ' . $filtro . ' ORDER BY ' . self::POSICIONES[$posicion - 1]);
+          $stmt = $this->pdo->prepare('SELECT COUNT(*) as numero FROM usuario LEFT JOIN aux_rol ON aux_rol.id_rol = usuario.id_rol WHERE ' . $filtro);
         }
         $stmt->execute($datosConsulta[1]);
         $numeroReg = $stmt->fetchAll();
-        var_dump($numeroReg);
         $numeroPag = $this->calcularUltimaPag($numeroReg[0]['numero']);
         return $numeroPag;
     }
@@ -125,7 +124,11 @@ class UsuariosModel extends \Com\Daw2\Core\BaseModel {
     }
     
     private function calcularUltimaPag(int $pagina) : int{
-        $final = ($pagina/20) + 1;
+        if($pagina % 20 == 0){
+            $final = ($pagina/20);
+        }else{
+           $final = ($pagina/20) + 1; 
+        }
         return $final;
     }
 

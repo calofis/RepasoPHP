@@ -128,10 +128,11 @@ class UsuarioController extends \Com\Daw2\Core\BaseController {
         $data['final'] = $modelUsuario->obtenerCount($_GET, $order, $pagina);
 
         $copia = $_GET;
-        unset($copia['order']);
         unset($copia['page']);
+        $data['filtroPaginado'] = count($copia) > 0 ? '&'.http_build_query($copia) : '';
+        unset($copia['order']);
         $data['filtro'] = count($copia) > 0 ? '&'.http_build_query($copia) : '';
-    
+
         $this->view->showViews(array('templates/header.view.php', 'roles.view.php', 'templates/footer.view.php'), $data);
     }
 
