@@ -58,7 +58,22 @@ class UsuariosModel extends \Com\Daw2\Core\BaseModel {
         return $stmt->fetchAll();
     }
 
-    public function filtrarA(array $filtros, int $posicion = 1, int $pagina): array {
+    public function obtenerCount(array $filtros, int $posicion = 1, int $pagina): int {
+        $datosConsulta = $this->filtrar($filtros);
+        $filtro = implode(' AND ', $datosConsulta[0]);
+        if(empty($filtro)){
+          $stmt = $this->pdo->query('SELECT COUNT(*) as numero FROM usuario LEFT JOIN aux_rol ON aux_rol.id_rol = usuario.id_rol ORDER BY ' . self::POSICIONES[$posicion - 1]);
+        }else{
+          $stmt = $this->pdo->prepare('SELECT COUNT(*) as numero FROM usuario LEFT JOIN aux_rol ON aux_rol.id_rol = usuario.id_rol WHERE ' . $filtro . ' ORDER BY ' . self::POSICIONES[$posicion - 1]);
+        }
+        $stmt->execute($datosConsulta[1]);
+        $numeroReg = $stmt->fetchAll();
+        var_dump($numeroReg);
+        $numeroPag = $this->calcularUltimaPag($numeroReg[0]['numero']);
+        return $numeroPag;
+    }
+    
+    public function filtrarA(array $filtros, int $posicion = 1, int $pagina): array{
         $datosConsulta = $this->filtrar($filtros);
         $filtro = implode(' AND ', $datosConsulta[0]);
         if(empty($filtro)){
@@ -107,6 +122,11 @@ class UsuariosModel extends \Com\Daw2\Core\BaseModel {
     private function calcularNumPag(int $pagina) : int{
         $inicio = ($pagina -1) * 20;
         return $inicio;
+    }
+    
+    private function calcularUltimaPag(int $pagina) : int{
+        $final = ($pagina/20) + 1;
+        return $final;
     }
 
 }

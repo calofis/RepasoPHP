@@ -125,6 +125,7 @@ class UsuarioController extends \Com\Daw2\Core\BaseController {
         
         $data['pagina'] = $pagina;
         $data['data'] = $modelUsuario->filtrarA($_GET, $order, $pagina);
+        $data['final'] = $modelUsuario->obtenerCount($_GET, $order, $pagina);
 
         $copia = $_GET;
         unset($copia['order']);
