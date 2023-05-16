@@ -127,7 +127,7 @@ class UsuariosModel extends \Com\Daw2\Core\BaseModel {
         if($pagina % 20 == 0){
             $final = ($pagina/20);
         }else{
-           $final = floor($pagina/20) + 1; 
+           $final = (int)floor($pagina/20) + 1; 
         }
         return $final;
     }
