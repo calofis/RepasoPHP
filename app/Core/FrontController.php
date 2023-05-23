@@ -139,7 +139,13 @@ class FrontController{
                 $controlador = new \Com\Daw2\Controllers\UsuarioController();
                     $controlador->datosFiltros();
                 }
-                , 'post');
+                , 'post');        
+        Route::add('/usuarios/delete/([a-zA-Z0-9\_]*)', 
+                function($nombre){
+                    $controlador = new \Com\Daw2\Controllers\UsuarioController();
+                    $controlador->delete($nombre);
+                }
+                , 'get');
         Route::pathNotFound(
             function(){
                 $controller = new \Com\Daw2\Controllers\ErroresController();

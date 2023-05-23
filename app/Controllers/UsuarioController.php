@@ -135,5 +135,16 @@ class UsuarioController extends \Com\Daw2\Core\BaseController {
 
         $this->view->showViews(array('templates/header.view.php', 'roles.view.php', 'templates/footer.view.php'), $data);
     }
+    
+    public function delete(string $nombre){
+        $modelUser = new \Com\Daw2\Models\UsuariosModel();
+        $comprobacion = $modelUser->deleteUser($nombre);
+        $copia = $_GET;
+        unset($copia['order']);
+        $order = $_GET['order'];
+        if($comprobacion){
+            header('Location: /roles?order='.$order.'&'.http_build_query($copia));
+        }
+    }
 
 }

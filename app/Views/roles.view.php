@@ -108,7 +108,7 @@
                                     <td><?php echo $user['salarioBruto']; ?></td>
                                     <td><?php echo $user['retencionIRPF']; ?></td>
                                     <td><?php echo $user['nombre_rol']; ?></td>
-                                    <td align="center"><a class="btn btn-clock btn-outline-primary" href="/usuarios/edit/<?php echo $user['username']; ?>"><i class="fas fa-edit"></i></a> <a class="btn btn-clock btn-outline-danger" href="/usuarios/delete/<?php echo $user['username']; ?>"><i class="fas fa-trash"></i></a></td>
+                                    <td align="center"><a class="btn btn-clock btn-outline-primary" href="/usuarios/edit/<?php echo $user['username']; ?>"><i class="fas fa-edit"></i></a> <a class="btn btn-clock btn-outline-danger" href="/usuarios/delete/<?php echo $user['username'];?>?<?php echo $filtroPaginado?>"><i class="fas fa-trash"></i></a></td>
                                 </tr>
                                 <?php
                             }
@@ -138,7 +138,7 @@
                                 </a>
                             </li>
                             <li class="page-item">
-                                <a class="page-link" href="/roles?order=1&page=<?php echo $pagina - 1; echo $filtroPaginado; ?>" aria-label="Previous">
+                                <a class="page-link" href="/roles?page=<?php echo $pagina - 1; echo $filtroPaginado; ?>" aria-label="Previous">
                                     <span aria-hidden="true">&lt;</span>
                                     <span class="sr-only">Previous</span>
                                 </a>

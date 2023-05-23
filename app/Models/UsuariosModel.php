@@ -131,5 +131,11 @@ class UsuariosModel extends \Com\Daw2\Core\BaseModel {
         }
         return $final;
     }
+    
+    public function deleteUser(string $nombre) : bool{
+        $stmt = $this->pdo->prepare('DELETE FROM usuario WHERE username = ?');
+        $stmt->execute([$nombre]);
+        return $stmt->rowCount() > 0;
+    }
 
 }
