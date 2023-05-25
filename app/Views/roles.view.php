@@ -3,7 +3,7 @@
         <div class="card shadow mb-4">
             <div
                 class="card-header">
-                <a href="./categoria/new" class="btn btn-outline-primary float-right">Nueva categoría</a>                              
+                <a href="/usuarios/new" class="btn btn-outline-primary float-right">Nuevo usuario</a>                              
             </div>
             <div class="card-body">
                 <div class="card shadow mb-4">

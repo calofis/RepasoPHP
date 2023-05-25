@@ -137,5 +137,14 @@ class UsuariosModel extends \Com\Daw2\Core\BaseModel {
         $stmt->execute([$nombre]);
         return $stmt->rowCount() > 0;
     }
-
+    public function createUser(array $valores) : bool{
+        $stmt = $this->pdo->prepare('INSERT INTO usuario VALUES (:username, :salario, :retenciones, 1, :roles)');
+        $stmt->execute($valores);
+        return $stmt->rowCount() > 0;
+    }
+    
+    public function getAllUsername() : array{
+         $stmt = $this->pdo->query('SELECT username FROM usuario');
+         return $stmt->fetchAll();
+    }
 }

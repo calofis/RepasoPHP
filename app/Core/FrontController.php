@@ -146,6 +146,12 @@ class FrontController{
                     $controlador->delete($nombre);
                 }
                 , 'get');
+         Route::add('/usuarios/new', 
+                function(){
+                    $controlador = new \Com\Daw2\Controllers\UsuarioController();
+                    $controlador->agregar();
+                }
+                , 'get');
         Route::pathNotFound(
             function(){
                 $controller = new \Com\Daw2\Controllers\ErroresController();

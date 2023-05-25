@@ -146,5 +146,75 @@ class UsuarioController extends \Com\Daw2\Core\BaseController {
             header('Location: /roles?order='.$order.'&'.http_build_query($copia));
         }
     }
+    
+    public function agregar(){
+         $data = array(
+            'titulo' => 'Roles',
+            'breadcrumb' => ['Inicio', 'Roles'],
+            'seccion' => 'roles'
+        );
+        $data['input'] = filter_var_array($_GET, FILTER_SANITIZE_SPECIAL_CHARS);
+        
+        $modelRol = new \Com\Daw2\Models\RolesModel();
+        $roles = $modelRol->obtenerRoles();
+        $rolesAux = [];
+        foreach ($roles as $rol){
+            $rolesAux[$rol['id_rol']] = '';
+        }
+        $data['roles'] = $roles;
+        
+        
+        $modelUsuario = new \Com\Daw2\Models\UsuariosModel();
+        $retenciones = $modelUsuario->obtenerRetenciones();
+        $retencionesAux = [];
+        foreach ($retenciones as $retencion){
+            $retencionesAux[$retencion['retencionIRPF']] = '';
+        }
+        $data['retenciones'] = $retenciones;
+        
+        
+        $usernamesAux = $modelUsuario->getAllUsername();
+        $usernames = [];
+        foreach ($usernamesAux as $username => $name){
+            $usernames[$name['username']] = '';
+        }
+        var_dump($_GET);
+        if(!empty($_GET)){
+            $errores = $this->checkValores($_GET, $usernames, $retencionesAux, $rolesAux);
+            $data['errores'] = $errores;
+        }
+        $copia = $_GET;
+        unset($copia['enviar']);
+        unset($copia['activo']);
+        if(empty($errores) && !empty($copia)){
+            $data['respuesta'] = $modelUsuario->createUser($copia);
+        }
+        
+        $this->view->showViews(array('templates/header.view.php', 'createUsuario.view.php', 'templates/footer.view.php'), $data);
+    }
+    
+    private function checkValores(array $valores, array $nombres, array $retenciones, array $roles) : array{
+        $errores = [];
+        if(!isset($valores['username']) || isset($nombres[$valores['username']])){
+            $errores['username'] = 'El Nombre del usuario ya existe en la base de datos';
+        }
+        if(empty($valores['username'])){
+            $errores['username'] = 'El nombre no puede estar en blanco';
+        }
+        if(!isset($valores['salario']) || (!is_numeric($valores['salario']) || $valores['salario'] < 0)){
+            $errores['salario'] = 'El salario tiene que ser un numero y estar en 0 o mas';
+        }
+        if(!isset($valores['retenciones']) || (!is_numeric($valores['retenciones']) ||  !isset($retenciones[$valores['retenciones']]))){
+            $errores['retenciones'] = 'La retencion introducida no coincide con las registradas en las bases de datos';
+        }
+        //if(!isset($valores['activo']) || (!is_int($valores['activo']) || $valores['activo'] !== 1 || $valores['activo'] !== 0)){
+            //$errores['activo'] = 'El valor de activo recibido no corresponde';
+        //}
+        if(!isset($valores['roles']) || (!is_numeric($valores['roles']) ||  !isset($roles[$valores['roles']]))){
+            $errores['roles'] = 'El rol introducido no se encuntra en la base de datos';
+        }
+        
+        return $errores;
+    }
 
 }
