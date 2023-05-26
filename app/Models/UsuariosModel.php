@@ -138,7 +138,7 @@ class UsuariosModel extends \Com\Daw2\Core\BaseModel {
         return $stmt->rowCount() > 0;
     }
     public function createUser(array $valores) : bool{
-        $stmt = $this->pdo->prepare('INSERT INTO usuario VALUES (:username, :salario, :retenciones, 1, :roles)');
+        $stmt = $this->pdo->prepare('INSERT INTO usuario VALUES (:username, :salario, :retenciones, :activo, :roles)');
         $stmt->execute($valores);
         return $stmt->rowCount() > 0;
     }
@@ -146,5 +146,22 @@ class UsuariosModel extends \Com\Daw2\Core\BaseModel {
     public function getAllUsername() : array{
          $stmt = $this->pdo->query('SELECT username FROM usuario');
          return $stmt->fetchAll();
+    }
+    
+    public function obtenerDatosUsuario(string $username){
+        $stmt = $this->pdo->prepare('SELECT * FROM usuario WHERE username = ?');
+        $stmt->execute([$username]);
+        if($row = $stmt->fetch()){
+            return $row;
+        }else{
+            return null;
+        }
+    }
+    
+    public function modificar(array $valores) : bool{
+        $stmt = $this->pdo->prepare('UPDATE usuario SET salarioBruto = :salarioBruto, retencionIRPF = :retencionIRPF, activo = :activo, id_rol = :id_rol WHERE username = :username');
+        var_dump($valores);
+        $stmt->execute($valores);
+        return $stmt->rowCount() > 0;
     }
 }

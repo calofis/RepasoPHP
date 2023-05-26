@@ -94,6 +94,8 @@ class UsuarioController extends \Com\Daw2\Core\BaseController {
         );
 
         $data['input'] = filter_var_array($_GET, FILTER_SANITIZE_SPECIAL_CHARS);
+        
+        
 
         $modelRol = new \Com\Daw2\Models\RolesModel();
 
@@ -147,14 +149,27 @@ class UsuarioController extends \Com\Daw2\Core\BaseController {
         }
     }
     
+    public function formularioAlta(){
+        $data = array(
+            'titulo' => 'Roles',
+            'breadcrumb' => ['Inicio', 'Roles'],
+            'seccion' => 'roles'
+        );
+        
+        $modelRol = new \Com\Daw2\Models\RolesModel();
+        $roles = $modelRol->obtenerRoles();
+        $modelUsuario = new \Com\Daw2\Models\UsuariosModel();
+        $retenciones = $modelUsuario->obtenerRetenciones();
+        
+        $this->view->showViews(array('templates/header.view.php', 'createUsuario.view.php', 'templates/footer.view.php'), $data);
+    }
     public function agregar(){
          $data = array(
             'titulo' => 'Roles',
             'breadcrumb' => ['Inicio', 'Roles'],
             'seccion' => 'roles'
         );
-        $data['input'] = filter_var_array($_GET, FILTER_SANITIZE_SPECIAL_CHARS);
-        
+        $data['input'] = filter_var_array($_POST, FILTER_SANITIZE_SPECIAL_CHARS);
         $modelRol = new \Com\Daw2\Models\RolesModel();
         $roles = $modelRol->obtenerRoles();
         $rolesAux = [];
@@ -178,21 +193,65 @@ class UsuarioController extends \Com\Daw2\Core\BaseController {
         foreach ($usernamesAux as $username => $name){
             $usernames[$name['username']] = '';
         }
-        var_dump($_GET);
-        if(!empty($_GET)){
-            $errores = $this->checkValores($_GET, $usernames, $retencionesAux, $rolesAux);
-            $data['errores'] = $errores;
-        }
-        $copia = $_GET;
+       
+        $copia = $_POST;
         unset($copia['enviar']);
         unset($copia['activo']);
+        $copia['activo'] = isset($_POST['activo']) ? 1 : false;
+        if(!empty($copia)){
+            $errores = $this->checkValores($copia, $usernames, $retencionesAux, $rolesAux);
+            $data['errores'] = $errores;
+        }
         if(empty($errores) && !empty($copia)){
             $data['respuesta'] = $modelUsuario->createUser($copia);
         }
         
         $this->view->showViews(array('templates/header.view.php', 'createUsuario.view.php', 'templates/footer.view.php'), $data);
     }
-    
+     public function modificar(string $nombre){
+         $modelUsuario = new \Com\Daw2\Models\UsuariosModel();
+         
+         
+         $modelRol = new \Com\Daw2\Models\RolesModel();
+         $roles = $modelRol->obtenerRoles();
+         $data['roles'] = $roles;
+          
+         
+         
+         $retenciones = $modelUsuario->obtenerRetenciones();
+         $data['retenciones'] = $retenciones;
+          
+         
+         $url = $modelUsuario->obtenerDatosUsuario($nombre);
+         $data['datosUsuario'] = $url;
+         $this->view->showViews(array('templates/header.view.php', 'modificarUsuario.view.php', 'templates/footer.view.php'), $data);
+     }
+     
+     public function modificarA(string $nombre){
+         $data = array(
+            'titulo' => 'Roles',
+            'breadcrumb' => ['Inicio', 'Roles'],
+            'seccion' => 'roles'
+        ); 
+        $modelRol = new \Com\Daw2\Models\RolesModel();
+        $roles = $modelRol->obtenerRoles();
+        $data['roles'] = $roles;
+        
+        
+        $modelUsuario = new \Com\Daw2\Models\UsuariosModel();
+        $retenciones = $modelUsuario->obtenerRetenciones();
+        $data['retenciones'] = $retenciones;
+        
+        $datos = $_POST;
+        $datos['username'] = $nombre;
+        $data['datosUsuario'] = $datos;
+        unset($datos['enviar']);
+        unset($datos['activo']);
+        $datos['activo'] = isset($_POST['activo']) ? 1 : 0;
+        $modificacion = $modelUsuario->modificar($datos);
+        $data['resultado'] = $modificacion;
+        $this->view->showViews(array('templates/header.view.php', 'modificarUsuario.view.php', 'templates/footer.view.php'), $data); 
+     }
     private function checkValores(array $valores, array $nombres, array $retenciones, array $roles) : array{
         $errores = [];
         if(!isset($valores['username']) || isset($nombres[$valores['username']])){
@@ -206,10 +265,7 @@ class UsuarioController extends \Com\Daw2\Core\BaseController {
         }
         if(!isset($valores['retenciones']) || (!is_numeric($valores['retenciones']) ||  !isset($retenciones[$valores['retenciones']]))){
             $errores['retenciones'] = 'La retencion introducida no coincide con las registradas en las bases de datos';
-        }
-        //if(!isset($valores['activo']) || (!is_int($valores['activo']) || $valores['activo'] !== 1 || $valores['activo'] !== 0)){
-            //$errores['activo'] = 'El valor de activo recibido no corresponde';
-        //}
+        }  
         if(!isset($valores['roles']) || (!is_numeric($valores['roles']) ||  !isset($roles[$valores['roles']]))){
             $errores['roles'] = 'El rol introducido no se encuntra en la base de datos';
         }
