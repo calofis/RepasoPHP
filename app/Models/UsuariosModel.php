@@ -143,13 +143,26 @@ class UsuariosModel extends \Com\Daw2\Core\BaseModel {
         return $stmt->rowCount() > 0;
     }
     
-    public function getAllUsername() : array{
-         $stmt = $this->pdo->query('SELECT username FROM usuario');
-         return $stmt->fetchAll();
+    public function existUsername(string $username) : bool{
+         $stmt = $this->pdo->prepare('SELECT username FROM usuario WHERE username = ?');
+         $stmt->execute([$username]);
+         return $stmt->rowCount() > 0;
+    }
+    
+    public function existRetencion(int $retencion) : bool{
+         $stmt = $this->pdo->prepare('SELECT retencionIRPF FROM usuario WHERE retencionIRPF = ?');
+         $stmt->execute([$retencion]);
+         return $stmt->rowCount() > 0;
+    }
+    
+     public function existRol(int $rol) : bool{
+         $stmt = $this->pdo->prepare('SELECT * FROM aux_rol WHERE id_rol = ?');
+         $stmt->execute([$rol]);
+         return $stmt->rowCount() > 0;
     }
     
     public function obtenerDatosUsuario(string $username){
-        $stmt = $this->pdo->prepare('SELECT * FROM usuario WHERE username = ?');
+        $stmt = $this->pdo->prepare('SELECT username, salarioBruto as salario, retencionIRPF as retenciones, activo, id_rol as roles FROM usuario WHERE username = ?');
         $stmt->execute([$username]);
         if($row = $stmt->fetch()){
             return $row;
@@ -159,8 +172,8 @@ class UsuariosModel extends \Com\Daw2\Core\BaseModel {
     }
     
     public function modificar(array $valores) : bool{
-        $stmt = $this->pdo->prepare('UPDATE usuario SET salarioBruto = :salarioBruto, retencionIRPF = :retencionIRPF, activo = :activo, id_rol = :id_rol WHERE username = :username');
         var_dump($valores);
+        $stmt = $this->pdo->prepare('UPDATE usuario SET salarioBruto = :salario, retencionIRPF = :retenciones, activo = :activo, id_rol = :roles WHERE username = :username');
         $stmt->execute($valores);
         return $stmt->rowCount() > 0;
     }

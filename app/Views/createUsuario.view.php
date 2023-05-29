@@ -7,7 +7,7 @@
             </div>
             <div class="card-body">
                 <div class="card shadow mb-4">
-                    <form method="post" action="/usuarios/new">
+                    <form method="post" action="<?php echo $url ?>">
                         <div
                             class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
                             <h6 class="m-0 font-weight-bold text-primary">Filtros</h6>                                    
@@ -22,11 +22,11 @@
                                         <p>El usuario <?php echo $input['username'] ?>  ha sido creado con exito</p>
                                     </div>
                                 </div>
-                                <?php } ?>
+                                <?php } ?> 
                                 <div class="col-12 col-lg-4">
                                     <div class="mb-3">
                                         <label for="username">Nombre completo:</label>
-                                        <input type="text" class="form-control" name="username" id="username" value="<?php echo isset($input['username']) ? $input['username'] : ''; ?>" placeholder="Username"/>
+                                        <input type="text" class="form-control" name="username" id="username" value="<?php echo isset($input['username']) ? $input['username'] : ''; ?>" <?php echo isset($modificando) ? "disabled" : '' ?> placeholder="Username"/>
                                     </div>
                                     <p class="text-danger small"><?php echo isset($errores['username']) ?  $errores['username'] : '';?></p>
                                 </div>
@@ -91,8 +91,8 @@
                         </div>
                         <div class="card-footer">
                             <div class="col-12 text-right">                     
-                                <a href="/usuarios/new" value="" name="reiniciar" class="btn btn-danger">Reiniciar datos</a>
-                                <input type="submit" value="Crear Usuario" name="enviar" class="btn btn-primary ml-2"/>
+                                <a href="<?php echo $url ?>" value="" name="reiniciar" class="btn btn-danger">Reiniciar datos</a>
+                                <input type="submit" value="Aplicar Cambio" name="enviar" class="btn btn-primary ml-2"/>
                             </div>
                         </div>
                     </form>
