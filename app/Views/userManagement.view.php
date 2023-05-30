@@ -63,7 +63,7 @@
                                 <label for="ejemplo_select">Activo</label> 
                                 <div class="col-sm-12">
                                     <div class="form-check">
-                                        <input class="form-check-input" id="activo" type="checkbox" value="1" name="activo" <?php echo isset($input['activo']) ? 'checked' : '';?>>
+                                        <input class="form-check-input" id="activo" type="checkbox" value="1" name="activo" <?php echo isset($input['activo']) && $input['activo'] ? 'checked' : '';?>>
                                         <label class="form-check-label" for="activo">Activo</label>
                                     </div>
                                     <p class="text-danger small"><?php echo isset($errores['activo']) ?  $errores['activo'] : '';?></p>

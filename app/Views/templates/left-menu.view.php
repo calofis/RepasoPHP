@@ -86,6 +86,12 @@
                   <p>Filtros</p>
                 </a>
               </li>
+               <li class="nav-item">
+                <a href="/pruebaCookies" class="nav-link <?php echo isset($seccion) && $seccion === 'cookies' ? 'active' : ''; ?>">
+                  <i class="fas fa-cube nav-icon"></i>
+                  <p>Filtros</p>
+                </a>
+              </li>
             </ul>
           </li>                   
         </ul>

@@ -165,7 +165,7 @@ class UsuarioController extends \Com\Daw2\Core\BaseController {
         $data['retenciones'] = $retenciones;
         
         $data['url'] = "/usuarios/new";
-        $this->view->showViews(array('templates/header.view.php', 'createUsuario.view.php', 'templates/footer.view.php'), $data);
+        $this->view->showViews(array('templates/header.view.php', 'userManagement.view.php', 'templates/footer.view.php'), $data);
     }
     public function agregar(){
          $data = array(
@@ -189,7 +189,8 @@ class UsuarioController extends \Com\Daw2\Core\BaseController {
         unset($copia['activo']);
         $copia['activo'] = isset($_POST['activo']) ? 1 : 0;
         if(!empty($copia)){
-            $errores = $this->checkValoresCrear($copia);
+            $nuevo = true;
+            $errores = $this->checkValoresCrear($copia, $nuevo);
             $data['errores'] = $errores;
         }
         if(empty($errores) && !empty($copia)){
@@ -197,7 +198,7 @@ class UsuarioController extends \Com\Daw2\Core\BaseController {
             header('Location: /roles');
         }
         $data['url'] = "/usuarios/new";
-        $this->view->showViews(array('templates/header.view.php', 'createUsuario.view.php', 'templates/footer.view.php'), $data);
+        $this->view->showViews(array('templates/header.view.php', 'userManagement.view.php', 'templates/footer.view.php'), $data);
     }
      public function modificar(string $nombre){
          $modelUsuario = new \Com\Daw2\Models\UsuariosModel();
@@ -217,7 +218,7 @@ class UsuarioController extends \Com\Daw2\Core\BaseController {
          $data['input'] = $datos;
          $data['url'] = "/usuarios/edit/".$datos['username'];
          $data['modificando'] = true;
-         $this->view->showViews(array('templates/header.view.php', 'createUsuario.view.php', 'templates/footer.view.php'), $data);
+         $this->view->showViews(array('templates/header.view.php', 'userManagement.view.php', 'templates/footer.view.php'), $data);
      }
      
      public function modificarA(string $nombre){
@@ -244,7 +245,8 @@ class UsuarioController extends \Com\Daw2\Core\BaseController {
         unset($datos['activo']);     
         $datos['activo'] = isset($_POST['activo']) ? 1 : 0;
         if(!empty($datos)){
-            $errores = $this->checkValoresModificar($datos);
+            $nuevo = false;
+            $errores = $this->checkValoresCrear($datos, $nuevo);
             $data['errores'] = $errores;
         }
         
@@ -254,12 +256,12 @@ class UsuarioController extends \Com\Daw2\Core\BaseController {
         }
         $data['modificando'] = true;
         $data['url'] = "/usuarios/edit/".$datos['username'];
-        $this->view->showViews(array('templates/header.view.php', 'createUsuario.view.php', 'templates/footer.view.php'), $data); 
+        $this->view->showViews(array('templates/header.view.php', 'userManagement.view.php', 'templates/footer.view.php'), $data); 
      }
-    private function checkValoresCrear(array $valores) : array{
+    private function checkValoresCrear(array $valores, bool $nuevo) : array{
         $errores = [];
         $modelUsuario = new \Com\Daw2\Models\UsuariosModel();
-        if(!isset($valores['username']) || $modelUsuario->existUsername($valores['username'])){
+        if(!isset($valores['username']) || $nuevo && $modelUsuario->existUsername($valores['username'])){
             $errores['username'] = 'El Nombre del usuario ya existe en la base de datos';
         }
         if(empty($valores['username'])){
@@ -277,21 +279,4 @@ class UsuarioController extends \Com\Daw2\Core\BaseController {
         
         return $errores;
     }
-    
-     private function checkValoresModificar(array $valores) : array{
-        $errores = [];
-        $modelUsuario = new \Com\Daw2\Models\UsuariosModel();  
-        if(!isset($valores['salario']) || (!is_numeric($valores['salario']) || $valores['salario'] < 0)){
-            $errores['salario'] = 'El salario tiene que ser un numero y estar en 0 o mas';
-        }
-        if(!isset($valores['retenciones']) || (!is_numeric($valores['retenciones']) ||  !$modelUsuario->existRetencion($valores['retenciones']))){
-            $errores['retenciones'] = 'La retencion introducida no coincide con las registradas en las bases de datos';
-        }  
-        if(!isset($valores['roles']) || (!is_numeric($valores['roles']) ||  !$modelUsuario->existRol($valores['roles']))){
-            $errores['roles'] = 'El rol introducido no se encuntra en la base de datos';
-        }
-        
-        return $errores;
-    }
-
 }
