@@ -185,6 +185,18 @@ class FrontController {
                     $controlador->doCookies();
                 }
                 , 'post');
+         Route::add('/signUp',
+                function () {
+                    $controlador = new \Com\Daw2\Controllers\UsuarioController();
+                    $controlador->signUp();
+                }
+                , 'get');
+        Route::add('/signUp',
+                function () {
+                    $controlador = new \Com\Daw2\Controllers\UsuarioController();
+                    $controlador->doSignUp();
+                }
+                , 'post');
         Route::pathNotFound(
                 function () {
                     $controller = new \Com\Daw2\Controllers\ErroresController();
