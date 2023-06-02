@@ -17,4 +17,14 @@ class UsuarioSisModel extends \Com\Daw2\Core\BaseModel {
         $stmt->execute($valores);
         return $stmt->rowCount() > 0;
     }
+    
+    public function login(array $valores) : array{
+        
+    }
+    
+    private function obtenerContra(string $nombre) : string{
+        $stmt = $this->pdo->prepare('SELECT pass from usuario_sistema WHERE email LIKE ?');
+        $stmt->execute([$nombre]);
+        return $stmt->fetch();
+    }
 }

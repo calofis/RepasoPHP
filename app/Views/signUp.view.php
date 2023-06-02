@@ -12,16 +12,10 @@
                         <div class="card-body">
                             <!--<form action="./?sec=formulario" method="post">                   -->
                             <div class="row">
-                                <?php if(isset($respuesta) && $respuesta){ ?>
+                                <?php if(isset($respuesta)){ ?>
                                  <div class="col-12">
                                     <div class="alert alert-success">
                                         <p>El usuario <?php echo $input['username'] ?>  ha sido creado con exito</p>
-                                    </div>
-                                </div>
-                                <?php } else if(!$respuesta){ ?> 
-                                <div class="col-12">
-                                    <div class="alert alert-danger">
-                                        <p>El usuario <?php echo $input['username'] ?>  no se ah podido crear</p>
                                     </div>
                                 </div>
                                 <?php } ?> 
