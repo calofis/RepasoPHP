@@ -11,7 +11,7 @@ class UsuarioSistemaController extends \Com\Daw2\Core\BaseController {
             'seccion' => 'sign-up'
         );
 
-        $modelRol = new \Com\Daw2\Models\RolesModel();
+        $modelRol = new \Com\Daw2\Models\RolesSistemaModel();
         $roles = $modelRol->obtenerRoles();
         $data['roles'] = $roles;
         $this->view->showViews(array('templates/header.view.php', 'signUp.view.php', 'templates/footer.view.php'), $data);
@@ -25,7 +25,7 @@ class UsuarioSistemaController extends \Com\Daw2\Core\BaseController {
         );
         $data['input'] = filter_var_array($_POST,FILTER_SANITIZE_SPECIAL_CHARS);
         
-        $modelRol = new \Com\Daw2\Models\RolesModel();
+        $modelRol = new \Com\Daw2\Models\RolesSistemaModel();
         $roles = $modelRol->obtenerRoles();
         $data['roles'] = $roles;
         
@@ -36,7 +36,6 @@ class UsuarioSistemaController extends \Com\Daw2\Core\BaseController {
             $modelUserSis = new \Com\Daw2\Models\UsuarioSisModel();
             unset($valores['password']);
             $valores['password'] = password_hash($_POST['password'], PASSWORD_DEFAULT);
-            var_dump($valores);
             $data['respuesta'] = $modelUserSis->createUser($valores);
         }
         $data['errores'] = $errores;
@@ -74,25 +73,43 @@ class UsuarioSistemaController extends \Com\Daw2\Core\BaseController {
     }
     
     public function doLogin(){
-        $errores = $this->erroresLogin($_POST);
+        $errores = $this->erroresLogin(filter_var_array($_POST,FILTER_SANITIZE_SPECIAL_CHARS));
         $data['loginError'] = $errores;
         
         if(empty($errores)){
             $modelUser = new \Com\Daw2\Models\UsuarioSisModel();
-            
-            $_SESSION['usuario'] = $_POST['username'];
+            $datosUser = $modelUser->login($_POST['email']);
+            unset($datosUser['pass']);
+            $_SESSION['usuario'] = $datosUser;
+            $_SESSION['permisos'] = $this->permisos($datosUser['id_rol']);
             header('location: /');
         }
-        
-        $this->view->showViews(array('login.view.php'), $data);
     }
     
-    private function erroresLogin(array $login) : string{
+    private function erroresLogin(array $login) : array{
         $modelUser = new \Com\Daw2\Models\UsuarioSisModel();
         $errores = [];
-        if(!$modelUser->existEmail($login['username']) || !password_verify($login['password'], $modelUser->obtenerContra($login['username']))){
+        $contra = $modelUser->obtenerContra($login['email']);
+        if(!$modelUser->existEmail($login['email']) || !password_verify($login['pass'], $contra['pass'])){
             $errores = 'El email o la contraseña son incorrectos';
         }
         return $errores;
+    }
+    
+    private function permisos(int $idrol) : string{
+        $modelRol = new \Com\Daw2\Models\RolesSistemaModel();
+        $rol = $modelRol->obtenerNombreRol($idrol);
+        $permisos = '';
+        if($rol == 'Administrador'){
+            $permisos = 'rwd';
+        }
+        if($rol == 'Encargado'){
+            $permisos = 'rw';
+        }
+        if($rol == 'Staff'){
+            $permisos = 'r';
+        }
+        
+        return $permisos;
     }
 }

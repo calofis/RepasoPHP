@@ -45,8 +45,8 @@
                                         <label for="idioma">Idioma:</label>
                                         <select name="idioma" id="idioma" class="form-control select" data-placeholder="Roles">
                                             <option value="0"></option>
-                                            <option value="es" <?php echo $input['idioma'] == 'es' ? 'selected="true"' : ''; ?>>Español</option>
-                                            <option value="en" <?php echo $input['idioma'] == 'en' ? 'selected="true"' : ''; ?>>Ingles</option>
+                                            <option value="es" <?php echo isset($input['idioma']) && $input['idioma'] == 'es' ? 'selected="true"' : ''; ?>>Español</option>
+                                            <option value="en" <?php echo isset($input['idioma']) && $input['idioma'] == 'en' ? 'selected="true"' : ''; ?>>Ingles</option>
                                         </select>
                                         <p class="text-danger small"><?php echo isset($errores['idioma']) ?  $errores['idioma'] : '';?></p>
                                     </div>

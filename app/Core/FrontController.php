@@ -15,6 +15,12 @@ class FrontController {
                         $controlador->login();
                     }
                     , 'get');
+            Route::add('/login',
+                    function () {
+                        $controlador = new \Com\Daw2\Controllers\UsuarioSistemaController();
+                        $controlador->doLogin();
+                    }
+                    , 'post');
 
             Route::pathNotFound(
                     function () {

@@ -45,7 +45,7 @@
     <ul class="navbar-nav ml-auto">
       <!-- Navbar Search -->
       <li class="nav-item">
-        <a class="nav-link" data-widget="navbar-search" href="#" role="button">
+          <a class="nav-link" data-widget="navbar-search" href="" role="button">
           <i class="text-danger fas fa-sign-out-alt"></i>
         </a>        
       </li>
@@ -74,7 +74,7 @@
           <img src="assets/img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image">
         </div>
         <div class="info">
-            <a href="#" class="d-block"><?php echo isset($_SESSION['usernameC']) ? $_SESSION['usernameC'] : 'Usuario'; ?></a>
+            <a href="#" class="d-block"><?php echo isset($_SESSION['usuario']['nombre']) ? $_SESSION['usuario']['nombre'] : 'Usuario'; ?></a>
         </div>
       </div>
      <?php 
